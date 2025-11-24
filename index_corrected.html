@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Akahai Dog run — イベント申込</title>
+
+  <!-- Google Fonts（任意で差し替え可） -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --sun-1: #FF8A5C; /* サンセットオレンジ */
+      --sun-2: #FFB399; /* 淡いピンク */
+      --bg: #FFF8F4;
+      --text: #2A1E1A;
+      --muted: #6b5a55;
+      --card-bg: rgba(255,255,255,0.95);
+      --glass: rgba(255,255,255,0.82);
+      --shadow: 0 8px 24px rgba(42,30,26,0.12);
+      font-family: "Noto Sans JP","Hiragino Kaku Gothic Pro",sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    html,body{height:100%;margin:0;color:var(--text);background:var(--bg);}
+
+    /* Header */
+    header.site-header{
+      position: fixed;
+      top:0;left:0;right:0;
+      z-index:40;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 28px;
+      transition:background 0.35s ease,box-shadow 0.35s ease,backdrop-filter 0.35s ease;
+      background:transparent;
+    }
+    header.site-header.scrolled{
+      background:rgba(255,255,255,0.95);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      backdrop-filter: blur(6px);
+    }
+    .logo{
+      display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--text);
+      font-weight:700;font-size:1.05rem;
+    }
+    .logo img{height:36px;border-radius:6px;object-fit:cover}
+
+    nav.header-nav a{
+      margin-left:16px;color:var(--text);text-decoration:none;font-weight:500;
+      opacity:0.95;
+    }
+
+    /* Hero */
+    .hero {
+      position:relative;
+      height:72vh;
+      min-height:520px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      margin-top:0;
+    }
+
+    /* background gradient + image (parallax via JS modifying transform) */
+    .hero__bg {
+      position:absolute;inset:0;
+      background: linear-gradient(180deg, rgba(255,138,92,0.15) 0%, rgba(255,179,153,0.08) 50%, rgba(255,179,153,0.06) 100%), url('images/sunset.PNG') center/cover no-repeat;
+      transform: translateY(0);
+      will-change: transform;
+      transition: transform 0.1s linear;
+      z-index:0;
+    }
+
+    /* foreground palm overlay (PNG with transparency) */
+    .hero__palm-left, .hero__palm-right{
+      position:absolute;
+      top:0;
+      height:110%;
+      width:auto;
+      z-index:2;
+      opacity:0.95;
+      pointer-events:none;
+    }
+    .hero__palm-left{left:-6%; transform:translateX(-2%);}
+    .hero__palm-right{right:-6%; transform:translateX(2%);}
+
+    /* hero content */
+    .hero__inner{
+      position:relative; z-index:5; text-align:center; max-width:1100px; padding:0 24px;
+      color: #fff; text-shadow: 0 6px 22px rgba(0,0,0,0.45);
+    }
+    .hero h1{
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      margin:0 0 12px; line-height:1.05;
+      letter-spacing: -0.02em;
+    }
+    .hero p.lead{
+      margin:0 auto; max-width:720px; font-size:1.05rem; opacity:0.95;
+    }
+    .hero .cta {
+      margin-top:22px;
+    }
+    .btn-cta{
+      display:inline-block;
+      padding:12px 20px;
+      font-weight:700;
+      color:white;
+      background:linear-gradient(90deg,var(--sun-1),var(--sun-2));
+      border-radius:999px;
+      text-decoration:none;
+      box-shadow: 0 8px 24px rgba(255,138,92,0.18);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn-cta:hover{ transform: translateY(-4px); box-shadow: 0 14px 36px rgba(255,138,92,0.24) }
+
+    /* Main container */
+    main.container{
+      max-width:1100px;
+      margin: -80px auto 60px; /* overlap hero */
+      padding:0 20px 80px;
+      z-index:10;
+      position:relative;
+    }
+
+    /* card grid sections */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:24px;
+      align-items:start;
+    }
+    .card{
+      background:var(--card-bg);
+      border-radius:14px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(42,30,26,0.12); }
+
+    .section-title{ font-size:1.25rem; margin:0 0 12px; color:var(--text); font-weight:700; }
+
+    /* Form styles */
+    form#meetupForm{
+      display:block;
+      background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+      border-radius:14px;
+      padding:22px;
+      box-shadow:var(--shadow);
+    }
+    .form-row{ display:flex; gap:12px; margin-bottom:12px; align-items:center; }
+    .form-row .col{ flex:1; min-width:0; }
+    label{ display:block; font-size:0.9rem; color:var(--muted); margin-bottom:6px; }
+    input[type="text"], input[type="email"], input[type="number"], select, textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(42,30,26,0.08);
+      background: #fff;
+      font-size:0.98rem;
+      color:var(--text);
+      box-sizing:border-box;
+    }
+    textarea{ min-height:100px; resize:vertical; }
+    fieldset.cars{ border:1px solid rgba(42,30,26,0.06); padding:12px; border-radius:10px; margin-bottom:12px; }
+
+    .submit-row{ display:flex; justify-content:flex-end; margin-top:12px; }
+    .btn-submit{
+      background:linear-gradient(90deg,var(--sun-1),var(--sun-2));
+      color:#fff; padding:12px 20px; border-radius:999px; border:none; font-weight:700;
+      cursor:pointer; box-shadow: 0 10px 26px rgba(255,138,92,0.16);
+    }
+    .btn-submit:active{ transform: translateY(1px); }
+
+    /* small helpers */
+    .muted{ color:var(--muted); font-size:0.9rem; }
+    .notes{ margin-top:18px; color:var(--muted); font-size:0.95rem; }
+
+    /* Fade-up animation helper */
+    .fade-up{ opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up.visible{ opacity:1; transform: translateY(0); }
+
+    /* responsive */
+    @media (max-width:1000px){
+      .grid{ grid-template-columns: repeat(2,1fr); }
+      header.site-header{ padding:14px 18px; }
+      .hero{ min-height:460px; height:64vh; }
+    }
+    @media (max-width:700px){
+      .grid{ grid-template-columns: 1fr; gap:16px; }
+      .form-row{ flex-direction:column; }
+      .hero{ height:56vh; min-height:380px; }
+      .hero__palm-left, .hero__palm-right{ display:none; } /* simplify on small */
+      main.container{ margin-top:-40px; padding: 0 16px 60px; }
+    }
+    /* --- 共通カード背景（ハワイアンぽく） --- */
+#form .section-title {
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+}
+
+#form form {
+  background: #ffffffd9;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  backdrop-filter: blur(4px);
+}
+
+/* --- 全フォーム統一デザイン --- */
+#form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+#form input,
+#form select,
+#form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #f2c8b7;  /* ほんのりピンクベージュ */
+  border-radius: 12px;
+  background: #fffdfc;
+  box-sizing: border-box;
+  transition: 0.2s;
+  appearance: none; /* selectデフォルトの影や枠を消す */
+}
+
+/* --- select 用の矢印をオリジナルに --- */
+#form select {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23ff7f6b' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 36px;
+}
+
+/* --- ホバー & フォーカス時の統一アクセント --- */
+#form input:focus,
+#form select:focus,
+#form textarea:focus {
+  border-color: #ff7f6b;
+  box-shadow: 0 0 0 3px rgba(255,127,107,0.25);
+  outline: none;
+}
+
+/* --- textarea の高さ調整 --- */
+#form textarea {
+  min-height: 100px;
+}
+
+/* --- form-row の調整 --- */
+#form .form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+#form .form-row .col {
+  flex: 1;
+}
+
+/* --- submit ボタンもハワイアン寄りに --- */
+.btn-submit {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff9a7b, #ff6b6b);
+  border-radius: 50px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 4px 14px rgba(255,127,107,0.3);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255,127,107,0.35);
+}
+
+/* --- 写真スライダー（About Akahai） --- */
+
+#about .slider-container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 18px;
+  margin-top: 16px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+#about .slider {
+  display: flex;
+  white-space: nowrap;
+  animation: slide 20s linear infinite;
+}
+
+#about .slider img {
+  width: 100%;
+  max-width: 600px;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-right: 12px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 総幅の 50% 分だけ移動させる → 完全シームレス */
+@keyframes slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.section-title {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.92); /* ほんのり透けた白 */
+  padding: 10px 18px;
+  border-radius: 14px; /* 丸四角 */
+  font-weight: 700;
+  font-size: 1.4rem;
+  backdrop-filter: blur(4px); /* 写真の上でも読みやすい */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08); /* 優しい影 */
+}
+  </style>
+  <style>
+  .weather-box {
+    background: rgba(255,255,255,0.8);
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: sans-serif;
+    font-size: 14px;
+  }
+  .weather-icon img {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* DOG-ID 説明 */
+.dogid-section {
+  margin: 30px 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333;
+}
+
+/* 説明文 */
+.dogid-intro {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* 注意文 */
+.dogid-note {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #555;
+}
+
+/* 2×2 写真グリッド */
+.dogid-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.dogid-grid figure {
+  margin: 0;
+}
+
+.dogid-grid img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.dogid-grid figcaption {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #444;
+}
+
+.dogid-grid {
+  row-gap: 40px;   /* 上下間隔 */
+  column-gap: 50px; /* 左右間隔 */
+}
+
+
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header" id="siteHeader">
+    <a href="#" class="logo"><img src="images/Log.jpg" alt="Akahai">Akahai Dog run</a>
+    <nav class="header-nav">
+      <a href="#about">About</a>
+      <a href="#events">Events</a>
+      <a href="#form">申込</a>
+    </nav>
+  </header>
+  
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" id="heroBg" aria-hidden="true"></div>
+
+    <!-- palm images (PNG with transparency) -->
+    <img class="hero__palm-left" src="images/palm-lft.png" alt="" aria-hidden="true">
+    <img class="hero__palm-right" src="images/palm-right.png" alt="" aria-hidden="true">
+
+    <div class="hero__inner">
+      <h1>Akahai Dog run — Sunset Meetups</h1>
+      <p class="lead">ゆったりとしたサンセットの時間に、犬と一緒に楽しむ交流会。美しい景色と温かいコミュニティへようこそ。</p>
+      <div class="cta">
+        <a class="btn-cta" href="#form">イベントに申し込む</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="container">
+    <!-- intro / cards -->
+
+<section id="about" class="fade-up">
+<div class="section-title title-white">Akahai イベントの様子</div>
+
+  <div class="slider-container">
+    <div class="slider">
+      <img src="images/オフ会1.jpg" alt="オフ会の様子1">
+      <img src="images/オフ会2.jpg" alt="オフ会の様子2">
+      <img src="images/オフ会3.jpg" alt="オフ会の様子3">
+      <img src="images/オフ会4.jpg" alt="オフ会の様子4">
+      <img src="images/オフ会5.jpg" alt="オフ会の様子4">
+      <img src="images/オフ会6.jpg" alt="オフ会の様子4">
+      <img src="images/オフ会7.jpg" alt="オフ会の様子4">
+      <img src="images/オフ会8.jpg" alt="オフ会の様子4">
+      <img src="images/オフ会9.jpg" alt="オフ会の様子4">
+      <img src="images/オフ会10.jpg" alt="オフ会の様子4">
+    </div>
+  </div>
+</section>
+
+    <!-- events -->
+<section id="events" style="margin-top:28px;">
+  <div class="section-title">Upcoming Events</div>
+  <div class="grid" style="margin-top:12px;">
+
+    <article class="card fade-up event-card">
+      <img src="images/event2.jpg" alt="イベント画像" style="width:100%; border-radius:12px; margin-bottom:8px;">
+      <h4>シュナ&ジャック&ウエスティオフ会</h4>
+      <p class="muted">2025年11月23日 09:30〜14:30</p>
+    </article>
+
+    <article class="card fade-up event-card">
+      <img src="images/event3.jpg" alt="イベント画像" style="width:100%; border-radius:12px; margin-bottom:8px;">
+      <h4>アメコカ&Eコッカーオフ会</h4>
+      <p class="muted">2025年12月7日 09:30〜14:30</p>
+    </article>
+
+    <article class="card fade-up event-card">
+      <img src="images/event4.jpg" alt="イベント画像" style="width:100%; border-radius:12px; margin-bottom:8px;">
+      <h4>サモエド&スピッツオフ会</h4>
+      <p class="muted">2025年12月21日 09:30〜14:30</p>
+    </article>
+
+  </div>
+</section>
+
+
+    <!-- FORM -->
+    <section id="form" style="margin-top:28px;">
+      <div class="section-title">イベント参加 お申し込みフォーム</div>
+
+      <form id="meetupForm" name="meetupForm" class="fade-up">
+        <label>参加イベントを選択*
+          <select name="eventName" id="eventName" required>
+            <option value="">選択してください</option>
+            <option value="トイプードルオフ会">シュナ&ジャック&ウエスティオフ会（2025年11月23日）</option>
+            <option value="シュナウザーオフ会">アメコカ&Eコッカーオフ会（2025年12月7日）</option>
+            <option value="シュナ&テリア">サモエド&スピッツオフ会 (2025年12月21日)</option>
+          </select>
+        </label>
+
+        <!-- DOG-ID 説明セクション -->
+<div class="dogid-section fade-up">
+
+  <p class="dogid-intro">
+    Akahai dog runは会員制のドッグランになります。<br>
+    DOG-ID（会員証）をお持ちでない方は、次の写真からDOG-IDのデザインを選択し、<br>
+    当日受付にてお受け取りください。
+  </p>
+
+  <!-- DOG-ID 写真 2×2 レイアウト -->
+  <div class="dogid-grid">
+    <figure>
+      <img src="images/DOG-ID1.jpg" alt="DOG-ID デザイン1">
+      <figcaption>1枚目</figcaption>
+    </figure>
+    <figure>
+      <img src="images/DOG-ID2.jpg" alt="DOG-ID デザイン2">
+      <figcaption>2枚目</figcaption>
+    </figure>
+    <figure>
+      <img src="images/DOG-ID3.jpg" alt="DOG-ID デザイン3">
+      <figcaption>3枚目</figcaption>
+    </figure>
+    <figure>
+      <img src="images/DOG-ID4.jpg" alt="DOG-ID デザイン4">
+      <figcaption>4枚目</figcaption>
+    </figure>
+  </div>
+
+  <!-- DOG-ID デザイン選択（プルダウン） -->
+<label>DOG-IDデザイン選択*
+  <select name="dogIdDesign" id="dogIdDesign" required>
+    <option value="">選択してください</option>
+    <option value="DOG-ID1">1枚目（デザイン1）</option>
+    <option value="DOG-ID2">2枚目（デザイン2）</option>
+    <option value="DOG-ID3">3枚目（デザイン3）</option>
+    <option value="DOG-ID4">4枚目（デザイン4）</option>
+    <option value="HAVE_DOGID">既にDOG-IDを持っている</option>ß
+  </select>
+</label>
+
+  <p class="dogid-note">
+    ※DOG-ID発行手数料 1,100円をいただいております。<br>
+    ※オフ会申込受付後、4日以内にEメールにてオフ会のご案内メッセージを送付させていただきます。
+  </p>
+
+</div>
+
+        <div class="form-row">
+          <div class="col"><label>姓（カタカナ）*<input name="lastName" required></label></div>
+          <div class="col"><label>名（カタカナ）*<input name="firstName" required></label></div>
+        </div>
+
+        <div class="form-row">
+          <div class="col"><label>大人*<input type="number" name="adults" min="0" value="1" required></label></div>
+          <div class="col"><label>お子様（4歳〜小学生）<input type="number" name="children" min="0" value="0"></label></div>
+          <div class="col"><label>ワンちゃん（匹）*<input type="number" name="dogs" min="0" value="0" required></label></div>
+        </div>
+
+        <label>犬種*<input name="breed" required></label>
+        <label>住所*<input name="address" placeholder="東京都〇〇市〇〇1-2-3" required></label>
+
+        <label>メールアドレス*<input type="email" name="email" required></label>
+        <label>ご連絡先電話番号*<input name="phone" required></label>
+
+        <fieldset class="cars">
+          <legend>ご来店のお車（駐車スペース選択）</legend>
+          <div class="form-row">
+            <div class="col"><label>1台目<select name="car1"><option>普通車</option><option>軽自動車</option><option>駐車場利用なし</option></select></label></div>
+            <div class="col"><label>2台目<select name="car2"><option>駐車場利用なし</option><option>普通車</option><option>軽自動車</option></select></label></div>
+            <div class="col"><label>3台目<select name="car3"><option>駐車場利用なし</option><option>普通車</option><option>軽自動車</option></select></label></div>
+          </div>
+        </fieldset>
+
+        <div class="form-row">
+          <div class="col">
+            <label>備考（ご意見あれば記入お願いします）<textarea name="message" placeholder=""></textarea></label>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap">
+          <div class="muted">参加費：¥3,000(1人と1匹)/追加　人・犬＋¥500）</div>
+          <div class="submit-row"><button class="btn-submit" type="submit">送信</button></div>
+        </div>
+
+        <p class="notes">※送信後は自動返信メールをお送りします。万が一届かない場合は akahai.event.info@gmail.com までご連絡ください。</p>
+      </form>
+
+    </section>
+
+    <section style="margin-top:28px;">
+      <div class="card fade-up">
+        <h4>注意事項</h4>
+        <ul class="muted">
+          <li>参加には事前登録が必要です。狂犬病、混合ワクチンの予防接種をお願いします。</li>
+          <li>駐車場に限りがございますので、先着23台までの登録で参加を締め切らせていただきますのでお早めに上記フォームでのお申し込みをお願いいたします。</li>
+          <li>キャンセルは開催3日前までにご連絡ください。</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="text-align:center;padding:40px 20px;color:var(--muted);">
+    © Akahai Dog run
+  </footer>
+
+  <!-- EmailJS SDK (v4) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    // ---------- CONFIG ----------
+    // EmailJS の値をあなたのものに置き換えてください
+    const EMAILJS_PUBLIC_KEY = "jPNx4AIujMKA0_n39"; // 例: public_xxx...
+    const EMAILJS_SERVICE_ID = "service_8zeaahv"; // 例: service_xxx
+    const EMAILJS_TEMPLATE_ID = "template_nhn7imo"; // 例: template_xxx
+    const RECEIVER_NOTICE = "akahai.event.info@gmail.com"; // 受信メールアドレス（説明用）
+    // -----------------------------
+
+    // init
+    if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    } else {
+      console.warn("EmailJS Public Key 未設定。送信テストを行う場合はキーを設定してください。");
+    }
+
+    // Header scroll behaviour
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+
+      // parallax effect for hero background
+      const heroBg = document.getElementById('heroBg');
+      if (heroBg) {
+        heroBg.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+      }
+    });
+
+    // IntersectionObserver for fade-in
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.18 });
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+    // small enhancement: smooth anchor scroll when clicking CTA
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (ev) => {
+        const href = a.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          ev.preventDefault();
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      });
+    });
+
+    // If user is on file:// show guidance
+    if (location.protocol === 'file:') {
+      console.warn('ファイルプロトコルで開かれています。EmailJSは動作しない場合があります。Live Server等で開いてください。');
+    }
+
+    
+  </script>
+
+<script>
+  const slider = document.querySelector('#about .slider');
+  slider.innerHTML += slider.innerHTML;  // ← シンプルでズレない完全版
+</script>
+
+<script>
+  // すべてのイベントカードを取得
+  document.querySelectorAll(".event-card").forEach(card => {
+    card.style.cursor = "pointer"; // マウスカーソルをリンク風に
+
+    card.addEventListener("click", () => {
+      const formSection = document.querySelector("#form");
+      formSection.scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+  });
+</script>
+
+<script>
+// --------------------------------------------------
+// EmailJS と Google Apps Script 両対応 用のコード
+// --------------------------------------------------
+
+// EmailJS の submit 処理
+const meetupForm = document.getElementById('meetupForm');
+
+if (meetupForm) {
+  meetupForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // EmailJS 送信
+    emailjs.sendForm("service_8zeaahv", "template_nhn7imo", this)
+      .then(() => {
+        console.log("EmailJS 送信完了");
+
+        // ★ Google Apps Script にも送信する
+        sendToSpreadsheet(new FormData(meetupForm));
+
+      })
+      .catch((err) => {
+        console.error("EmailJS エラー:", err);
+        alert("送信中にエラーが発生しました。");
+      });
+  });
+}
+
+
+// --------------------------------------------------
+// Google スプレッドシートへ送信
+// --------------------------------------------------
+function sendToSpreadsheet(formData) {
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxyQOnB6b77snzQYvikSEiOGglOMIX3eqebPK8tpnjtByu4kBuewRyV3ykOZl8qeVhN5Q/exec";
+
+  fetch(scriptURL, {
+    method: "POST",
+    mode: "no-cors", // ★これ必須
+    body: formData   // ★FormData は自動でマルチパート送信になる
+  })
+  .then(() => {
+    alert("送信が完了しました。ありがとうございました！");
+    meetupForm.reset();
+  })
+  .catch((err) => {
+    alert("スプレッドシート送信エラーが発生しました");
+    console.error(err);
+  });
+}
+</script>
+
+</body>
+</html>
