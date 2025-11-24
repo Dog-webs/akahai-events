@@ -395,6 +395,18 @@
   column-gap: 50px; /* 左右間隔 */
 }
 
+.col label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+}
+
+.note {
+  font-size: 12px;
+  color: #7a6b65;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
 
 </style>
 </head>
@@ -525,10 +537,10 @@
 <label>DOG-IDデザイン選択*
   <select name="dogIdDesign" id="dogIdDesign" required>
     <option value="">選択してください</option>
-    <option value="DOG-ID1">1枚目（デザイン1）</option>
-    <option value="DOG-ID2">2枚目（デザイン2）</option>
-    <option value="DOG-ID3">3枚目（デザイン3）</option>
-    <option value="DOG-ID4">4枚目（デザイン4）</option>
+    <option value="DOG-ID1">1枚目（ウミガメ）</option>
+    <option value="DOG-ID2">2枚目（マンタ）</option>
+    <option value="DOG-ID3">3枚目（ティキ）</option>
+    <option value="DOG-ID4">4枚目（ヤモリ）</option>
     <option value="HAVE_DOGID">既にDOG-IDを持っている</option>ß
   </select>
 </label>
@@ -547,7 +559,7 @@
 
         <div class="form-row">
           <div class="col"><label>大人*<input type="number" name="adults" min="0" value="1" required></label></div>
-          <div class="col"><label>お子様（4歳〜小学生）<input type="number" name="children" min="0" value="0"></label></div>
+          <div class="col"><label>お子様※小学生、未就学児はランへの入場は出来ません<input type="number" name="children" min="0" value="0"></label></div>
           <div class="col"><label>ワンちゃん（匹）*<input type="number" name="dogs" min="0" value="0" required></label></div>
         </div>
 
@@ -586,7 +598,7 @@
       <div class="card fade-up">
         <h4>注意事項</h4>
         <ul class="muted">
-          <li>参加には事前登録が必要です。狂犬病、混合ワクチンの予防接種をお願いします。</li>
+          <li>参加には事前登録が必要です。イベント当日、狂犬病・混合ワクチンの接種証明書のご持参をお願いします。</li>
           <li>駐車場に限りがございますので、先着23台までの登録で参加を締め切らせていただきますのでお早めに上記フォームでのお申し込みをお願いいたします。</li>
           <li>キャンセルは開催3日前までにご連絡ください。</li>
         </ul>
