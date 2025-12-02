@@ -694,23 +694,29 @@
 
 <script>
 // --------------------------------------------------
-// EmailJS と Google Apps Script 両対応 用のコード
+// EmailJS と Google Apps Script（高速版）
 // --------------------------------------------------
 
-// EmailJS の submit 処理
 const meetupForm = document.getElementById('meetupForm');
 
 if (meetupForm) {
-  meetupForm.addEventListener("submit", function(e) {
+  meetupForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // EmailJS 送信
-    emailjs.sendForm("service_8zeaahv", "template_nhn7imo", this)
-      .then(() => {
-        console.log("EmailJS 送信完了");
+    const formData = new FormData(meetupForm);
 
-        // ★ Google Apps Script にも送信する
-        sendToSpreadsheet(new FormData(meetupForm));
+    // ① EmailJS を先に送信（成功したら即ポップアップ）
+    emailjs.sendForm("service_8zeaahv", "template_nhn7imo", meetupForm)
+      .then(() => {
+
+        // ★ ここで即ポップアップ（GAS を待たない！）
+        alert("送信が完了しました。ありがとうございました！");
+
+        // フォームリセット
+        meetupForm.reset();
+
+        // ② GAS へは裏で送信（ユーザーを待たせない）
+        sendToSpreadsheet(formData);
 
       })
       .catch((err) => {
@@ -722,27 +728,23 @@ if (meetupForm) {
 
 
 // --------------------------------------------------
-// Google スプレッドシートへ送信
+// Google スプレッドシートへ送信（非同期で裏処理）
 // --------------------------------------------------
 function sendToSpreadsheet(formData) {
-
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxyQOnB6b77snzQYvikSEiOGglOMIX3eqebPK8tpnjtByu4kBuewRyV3ykOZl8qeVhN5Q/exec";
+  const scriptURL =
+    "https://script.google.com/macros/s/AKfycbxyQOnB6b77snzQYvikSEiOGglOMIX3eqebPK8tpnjtByu4kBuewRyV3ykOZl8qeVhN5Q/exec";
 
   fetch(scriptURL, {
     method: "POST",
-    mode: "no-cors", // ★これ必須
-    body: formData   // ★FormData は自動でマルチパート送信になる
-  })
-  .then(() => {
-    alert("送信が完了しました。ありがとうございました！");
-    meetupForm.reset();
+    mode: "no-cors",
+    body: formData
   })
   .catch((err) => {
-    alert("スプレッドシート送信エラーが発生しました");
-    console.error(err);
+    console.error("GAS 送信エラー:", err);
   });
 }
 </script>
+
 
 </body>
 </html>
