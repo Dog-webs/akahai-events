@@ -583,6 +583,7 @@
           <div class="col"><label>ワンちゃん（匹）*<input type="number" name="dogs" min="0" value="0" required></label></div>
         </div>
 
+        <label>犬の名前*<input name="dogname" required></label>
         <label>犬種*<input name="breed" required></label>
         <label>住所*<input name="address" placeholder="東京都〇〇市〇〇1-2-3" required></label>
 
@@ -614,6 +615,45 @@
 
     </section>
 
+    <!-- ▼ イベント申し込みの流れ（注意事項の上に追加） -->
+<section style="margin-top:28px;">
+  <div class="card fade-up">
+    <h4>イベント申し込みの流れ</h4>
+    <ul class="muted" style="line-height:1.7; padding-left:1.2em;">
+
+      <li>
+        イベント申込サイトで必要事項をご入力ください。(上記必須項目をご入力ください。)
+      </li>
+
+      <li style="color:red; font-weight:700; font-size:1rem;">
+        事前登録フォームに進み、Googleフォームで登録をお願いします。<br>
+        （※DOG-ID をお持ちの方は事前登録不要です）
+        <br>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe30vsnPZWRTXP2MS6_UiUf_0xG8lvmU9_9SNkhDT9mkc00BA/viewform?fbclid=PAdGRleAOmIvNleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAadW1WbDuCxMRVWHylEl0zULIlgNe2KVvmlSEo8h_VhW6-xqbmlXfJjLhGksdg_aem_nsJu7TxcFxoV3og98bBj_g"
+           style="color:#1200d8; text-decoration:underline; font-size:1.05rem; font-weight:900;">
+          → 事前登録フォームはこちら
+        </a>
+      </li>
+
+      <li>
+        AKAHAI スタッフが、お申込み内容と事前登録内容を確認します。
+      </li>
+
+      <li>
+        問題がなければ、AKAHAIより「ご案内メール」をお送りします。  
+        これで申込完了となります。
+      </li>
+
+      <li style="list-style:none; color:#d80000; font-weight:700; font-size:1.05rem;">
+        ※DOG-ID（AKAHAI会員証）をお持ちでないお客様については、<br>
+        当日、狂犬病接種証書およびワクチン接種証明書のご持参をお忘れないようお願いいたします。
+      </li>
+
+    </ul>
+  </div>
+</section>
+<!-- ▲ イベント申し込みの流れ -->
+  
     <section style="margin-top:28px;">
       <div class="card fade-up">
         <h4>注意事項</h4>
@@ -731,7 +771,13 @@ if (meetupForm) {
       .then(() => {
 
         // ★ ここで即ポップアップ（GAS を待たない！）
-        alert("送信が完了しました。ありがとうございました！");
+        alert(
+        "送信が完了しました！\n" +
+        "ご入力有難うございます！\n\n" +
+        "DOG-IDをお持ちでない方は、\n" +
+        "サイト下部に記載のGoogleフォームリンクにて\n" +
+        "初回事前登録をお願いいたします！"
+        );
 
         // フォームリセット
         meetupForm.reset();
@@ -753,7 +799,7 @@ if (meetupForm) {
 // --------------------------------------------------
 function sendToSpreadsheet(formData) {
   const scriptURL =
-    "https://script.google.com/macros/s/AKfycbxyQOnB6b77snzQYvikSEiOGglOMIX3eqebPK8tpnjtByu4kBuewRyV3ykOZl8qeVhN5Q/exec";
+    "https://script.google.com/macros/s/AKfycbymr8_4vY0TheFEE10JMIM4AHlLNldKYcJx0J20oInJriLMzW6KQq7Uk6XWyZdeeJQzYA/exec";
 
   fetch(scriptURL, {
     method: "POST",
@@ -765,7 +811,6 @@ function sendToSpreadsheet(formData) {
   });
 }
 </script>
-
 
 </body>
 </html>
