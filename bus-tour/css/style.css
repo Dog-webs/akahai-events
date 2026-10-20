@@ -34,7 +34,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .site-nav a:not(.nav-cta):hover, .text-link:hover, .back-link:hover { color: #D75E34; }
 .site-nav .nav-cta { color: white; background: var(--text); padding: 11px 19px; border-radius: 999px; }
 .menu-toggle { display: none; border: 1px solid var(--line); background: white; color: var(--text); border-radius: 999px; padding: 9px 14px; font: inherit; font-size: 12px; font-weight: 700; }
-.hero { min-height: 590px; position: relative; overflow: hidden; display: flex; align-items: center; background: linear-gradient(112deg, #FFF8F4 0%, #FFF0E7 53%, #F8D6C4 100%); }
+.hero {
+  min-height: 590px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-color: #FFF8F4;
+}
 .hero-content { position: relative; z-index: 2; padding-block: 82px 76px; }
 .eyebrow { margin: 0 0 13px; color: #B65B3A; font-size: 11px; font-weight: 800; letter-spacing: .17em; }
 .eyebrow span { display: inline-block; width: 22px; height: 2px; background: var(--sun-1); vertical-align: middle; margin-right: 8px; }
@@ -52,7 +59,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .button-full { width: 100%; }
 .text-link { font-size: 13px; font-weight: 700; text-decoration: none; }
 .draft-note { margin: 26px 0 0; color: #8D776B; font-size: 11px; }
-.hero-art { position: absolute; inset: 0 0 0 43%; overflow: hidden; opacity: .95; }
+.hero-art {
+  position: absolute;
+  inset: 0;
+  background-image: url("../images/bus-tour-hero.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
 .sun { position: absolute; width: 250px; height: 250px; border-radius: 50%; right: 18%; top: 70px; background: linear-gradient(140deg, #FFD8A4, #FF9A72); }
 .hill { position: absolute; width: 110%; height: 42%; left: -5%; bottom: -8%; border-radius: 50% 50% 0 0; }
 .hill-one { background: #E9B79C; transform: rotate(-8deg); bottom: -18%; }
@@ -138,10 +153,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .site-nav.is-open { display: flex; flex-direction: column; }
   .site-nav a { padding: 12px; }.site-nav .nav-cta { text-align: center; margin-top: 5px; }
   .hero { min-height: 690px; align-items: flex-start; }
-  .hero-content { padding-top: 52px; padding-bottom: 270px; }
+  .hero-content {
+  position: relative;
+  z-index: 2;
+  padding-block: 82px 76px;}
   .hero h1 { font-size: clamp(36px, 10vw, 52px); }
   .hero-lead { font-size: 14px; }
-  .hero-art { inset: auto 0 0 0; height: 320px; }
+  .hero-art {
+  inset: 0;
+  height: auto;
+  background-position: 62% center;}
   .sun { width: 150px; height: 150px; right: 16%; top: 10px; }
   .bus-illustration { width: 76%; height: 105px; right: 10%; bottom: 25%; border-width: 4px; }
   .bus-window { height: 32px; margin-top: 13px; border-width: 2px; }
