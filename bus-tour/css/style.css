@@ -208,3 +208,33 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* 複数開催日の表示 */
+.tour-date-row {
+  align-items: flex-start;
+}
+
+.tour-date-list {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tour-date-list li {
+  position: relative;
+  padding-left: 14px;
+  line-height: 1.5;
+}
+
+.tour-date-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #C87955;
+}
+
