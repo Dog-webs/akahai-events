@@ -9,7 +9,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js" defer></script>
+<!-- パーティクルライブラリ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js" defer></script>
+
+<!-- 既存のサイト制御JS -->
+<script src="js/main.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -29,17 +33,35 @@
   </header>
 
   <main id="main">
-    <div class="detail-hero">
-      <div class="wrap detail-hero-inner">
-        <a class="back-link" href="index.html">← ツアー一覧へ戻る</a>
-        <p class="eyebrow">TOUR DETAILS</p>
-        <span class="status-pill">開催情報準備中</span>
-        <h1>わんわんバスツアー</h1>
-        <p>愛犬と一緒に楽しむ、特別なお出かけ。</p>
-        <div class="detail-hero-art" aria-hidden="true"><span>🐶</span><span>＋</span><span>🚌</span></div>
-        <p class="draft-note">※ 仮ページです。開催情報・料金・予約先は確定後に更新します。</p>
-      </div>
-    </div>
+
+          <div class="detail-hero">
+
+            <!-- ハワイアン装飾 -->
+            <div class="hawaiian-decor" aria-hidden="true">
+              <span class="tropical-flower flower-one">🌺</span>
+              <span class="tropical-flower flower-two">🐶</span>
+              <span class="tropical-flower flower-three">🌺</span>
+              <span class="tropical-leaf leaf-one">🌴</span>
+              <span class="tropical-leaf leaf-two">🐾</span>
+            </div>
+
+            <!-- 波の装飾 -->
+            <div class="ocean-wave wave-one" aria-hidden="true"></div>
+            <div class="ocean-wave wave-two" aria-hidden="true"></div>
+
+            <div class="wrap detail-hero-inner">
+              <a class="back-link" href="index.html">← ツアー一覧へ戻る</a>
+
+              <p class="eyebrow">TOUR DETAILS</p>
+
+              <span class="status-pill">開催決定</span>
+
+              <p class="draft-note">
+                ※ 開催情報、ツアー内容については、以下確認をお願いします。
+              </p>
+            </div>
+
+          </div>
 
     <section class="section wrap detail-layout">
       <div class="detail-main">

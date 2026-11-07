@@ -238,3 +238,207 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: #C87955;
 }
 
+/* ツアー詳細ページ：メイン画像 */
+.detail-hero-image {
+  width: calc(100% - 1cm);
+  margin: 0.5cm auto;
+  overflow: hidden;
+}
+
+.detail-hero-image img {
+  display: block;
+  width: min(100%, 760px);
+  height: auto;
+  margin-inline: auto;
+  border-radius: 8px;
+}
+
+
+
+/* =====================================
+   HAWAIIAN RESORT ANIMATION
+===================================== */
+
+.detail-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    #FFF1E7 0%,
+    #F8D9C8 50%,
+    #FBD5B9 100%
+  );
+}
+
+/* コンテンツを最前面へ */
+.detail-hero-inner {
+  position: relative;
+  z-index: 5;
+}
+
+/* 装飾レイヤー */
+.hawaiian-decor {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 大きな南国の花 */
+.tropical-flower {
+  position: absolute;
+  display: block;
+  font-size: clamp(65px, 9vw, 125px);
+  opacity: .75;
+  filter: drop-shadow(0 8px 12px rgba(100,60,40,.12));
+  animation: flower-float 7s ease-in-out infinite;
+}
+
+.flower-one {
+  top: 8%;
+  right: 12%;
+  animation-delay: 0s;
+}
+
+.flower-two {
+  bottom: 24%;
+  right: 35%;
+  font-size: clamp(45px, 6vw, 85px);
+  animation-delay: -2s;
+}
+
+.flower-three {
+  top: 45%;
+  left: 5%;
+  font-size: clamp(40px, 5vw, 75px);
+  animation-delay: -4s;
+}
+
+/* ヤシの葉 */
+.tropical-leaf {
+  position: absolute;
+  display: block;
+  font-size: clamp(85px, 12vw, 155px);
+  opacity: .32;
+  animation: leaf-sway 9s ease-in-out infinite;
+}
+
+.leaf-one {
+  top: -12%;
+  left: -2%;
+  transform-origin: bottom left;
+}
+
+.leaf-two {
+  right: -2%;
+  bottom: 2%;
+  font-size: clamp(75px, 10vw, 130px);
+  animation-delay: -3s;
+}
+
+/* 海の波 */
+.ocean-wave {
+  position: absolute;
+  left: -10%;
+  bottom: -75px;
+  width: 120%;
+  height: 145px;
+  border-radius: 50% 50% 0 0;
+  pointer-events: none;
+}
+
+.wave-one {
+  z-index: 1;
+  background: rgba(94, 190, 181, .28);
+  transform: rotate(-3deg);
+  animation: wave-move 8s ease-in-out infinite;
+}
+
+.wave-two {
+  z-index: 2;
+  bottom: -95px;
+  background: rgba(67, 160, 157, .22);
+  transform: rotate(3deg);
+  animation: wave-move 11s ease-in-out infinite reverse;
+}
+
+/* 花がゆっくり漂う */
+@keyframes flower-float {
+  0%, 100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-22px) rotate(8deg);
+  }
+}
+
+/* 葉が風に揺れる */
+@keyframes leaf-sway {
+  0%, 100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+/* 波がゆっくり動く */
+@keyframes wave-move {
+  0%, 100% {
+    translate: -2% 0;
+  }
+  50% {
+    translate: 2% -10px;
+  }
+}
+
+/* スマートフォン */
+@media (max-width: 760px) {
+  .tropical-flower {
+    opacity: .55;
+  }
+
+  .flower-one {
+    right: 2%;
+    top: 12%;
+  }
+
+  .flower-two {
+    right: 15%;
+    bottom: 20%;
+  }
+
+  .flower-three {
+    left: 1%;
+    top: 55%;
+  }
+
+  .leaf-one {
+    left: -12%;
+  }
+
+  .leaf-two {
+    right: -12%;
+  }
+
+  .ocean-wave {
+    height: 100px;
+  }
+}
+
+/* 動きを抑える設定 */
+@media (prefers-reduced-motion: reduce) {
+  .tropical-flower,
+  .tropical-leaf,
+  .ocean-wave {
+    animation: none !important;
+  }
+}
+
+
+
+
+
+
