@@ -437,6 +437,131 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* ========================================
+   予約フォームボタン
+   HAWAIIAN RESERVATION DESIGN
+======================================== */
+
+.reservation-button {
+  position: relative;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 18px;
+  margin-top: 22px;
+
+  color: #ffffff;
+  text-decoration: none;
+
+  background: linear-gradient(
+    135deg,
+    #079b9a 0%,
+    #087f83 55%,
+    #075e65 100%
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+
+  box-shadow:
+    0 5px 0 #064e53,
+    0 9px 20px rgba(0, 90, 90, 0.20);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+/* ボタン内部 */
+.reservation-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+/* 英字ラベル */
+.reservation-button-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #c5f5e9;
+}
+
+/* メインテキスト */
+.reservation-button-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* 矢印 */
+.reservation-button-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  font-size: 19px;
+  color: #087f83;
+
+  background: #ffffff;
+  border-radius: 50%;
+
+  transition: transform 0.3s ease;
+}
+
+/* ホバー時 */
+.reservation-button:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 0 #064e53,
+    0 14px 26px rgba(0, 90, 90, 0.25);
+
+  filter: brightness(1.08);
+}
+
+/* 矢印アニメーション */
+.reservation-button:hover .reservation-button-arrow {
+  transform: translate(3px, -3px);
+}
+
+/* クリック時 */
+.reservation-button:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 #064e53,
+    0 4px 10px rgba(0, 90, 90, 0.2);
+}
+
+/* キーボード操作時 */
+.reservation-button:focus-visible {
+  outline: 3px solid #f0b85a;
+  outline-offset: 4px;
+}
+
+/* スマートフォン */
+@media (max-width: 600px) {
+  .reservation-button {
+    padding: 18px 14px;
+  }
+
+  .reservation-button-main {
+    font-size: 15px;
+  }
+}
 
 
 
