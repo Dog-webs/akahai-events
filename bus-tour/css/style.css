@@ -562,7 +562,22 @@ button, a { -webkit-tap-highlight-color: transparent; }
     font-size: 15px;
   }
 }
+/* バスツアー紹介動画 */
+.tour-movie {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #f3e5d8;
+  position: relative;
+}
 
+.tour-movie video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
 
 
 
